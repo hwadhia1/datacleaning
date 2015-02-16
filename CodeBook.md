@@ -140,7 +140,7 @@ subjecttables<-lapply(paste(data_dir,subjectfiles,sep = "/"), read.csv, sep="",h
 subjecttables<-bind_rows(subjecttables)  
 ```
   
-###1. Merges the training and the test sets to create one data set
+###Merges the training and the test sets to create one data set
 ```
 # Build the full dataset  
 fulldata<-bind_cols(subjecttables,ytables,xtables)  
@@ -149,22 +149,22 @@ fulldata<-bind_cols(subjecttables,ytables,xtables)
 rm(subjecttables,ytables,xtables)  
 ```
   
-###4. Appropriately labels the data set with descriptive variable names
+###Appropriately labels the data set with descriptive variable names
 ```
 # Relabel column names with subject, activity, and features  
 colnames(fulldata)<-c("subject","activity",as.character(features[,2]))  
 ```
 
-###3. Uses descriptive activity names to name the activities in the data set
+###Uses descriptive activity names to name the activities in the data set
 ```
 # Change activity column to a factor with labels  
 fulldata[,"activity"]<-factor(fulldata[,"activity"],labels=activities[,2])  
 ```
   
-###2. Extracts only the measurements on the mean and standard deviation for each measurement.
+###Extracts only the measurements on the mean and standard deviation for each measurement.
 measuresdata<-fulldata[,grep("subject|activity|-mean\\(\\)|-std\\(\\)",colnames(fulldata))]  
   
-###5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+###From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 measuresonly<- names(subset(measuresdata,select=-c(activity,subject)))  
 tidydataframe <- aggregate(measuresdata[,measuresonly], by=measuresdata[c("activity","subject")], FUN=mean)  
   
